@@ -20,7 +20,7 @@ To destroy the graph:
 To add a node to the graph:
 
     g->addNode(g, "The name of the node"); 
-    //The id of the new added node will be returned. The id can be find in the array g->nodeSet[struct Node].
+    //The id of the new added node will be returned. The id can be found in the array g->nodeSet[struct Node].
 
 
 To add an edge to the graph
