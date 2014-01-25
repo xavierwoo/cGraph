@@ -53,8 +53,8 @@ struct Graph{
 
 
 
-struct Graph  *Graph(struct Graph *self);
-
+struct Graph *Graph(struct Graph *self);
+struct Graph *copy_Graph(struct Graph *self);
 void del_Graph(struct Graph *self);
 
 

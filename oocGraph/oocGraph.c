@@ -12,6 +12,29 @@
 #include <stdlib.h>
 #include "oocGraph.h"
 
+struct Graph *copy_Graph(struct Graph *self){
+    int i;
+    struct Graph *cg = NULL;
+    struct EdgeLink *el = NULL;
+    
+    cg = Graph(cg);
+    
+    //copy nodes
+    for (i=0; i<self->nodeNum; i++) {
+        cg->addNode(cg, self->nodeSet[i].nodeName);
+    }
+    
+    
+    //copy edges
+    el = self->edgeSet;
+    while (el != NULL) {
+        cg->addEdge(cg, el->edge->source, el->edge->sink, el->edge->cost);
+        el = el->next;
+    }
+    
+    return cg;
+}
+
 double Graph_edgeCost(struct Graph *self, int idSource, int idSink){
     struct EdgeLink *edgeLink = NULL;
     

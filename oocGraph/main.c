@@ -11,7 +11,8 @@
 int main(int argc, const char * argv[])
 {
     struct Graph *g = NULL;
-    
+    struct Graph *cg = NULL;
+    int i =0;
     g = Graph(g);
     g->addNode(g, "a");
     g->addNode(g, "b");
@@ -26,14 +27,17 @@ int main(int argc, const char * argv[])
     g->addEdge(g, 2, 3, 1);
     g->addEdge(g, 3, 4, 1);
     g->addEdge(g, 1, 3, 1);
+    
+    
     g->printGraph(g);
     
-    printf("edge [0--1]:%lf\n", g->edgeCost(g, 0, 1));
-    g->removeEdge(g, 0, 1);
-    printf("edge [0--1]:%lf\n", g->edgeCost(g, 0, 1));
-
+    cg = copy_Graph(g);
         
+    
+    cg->printGraph(cg);
+    
     del_Graph(g);
+    del_Graph(cg);
     
     return 0;
 }
