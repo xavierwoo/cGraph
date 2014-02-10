@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 Xavier Woo. All rights reserved.
 //
 
-#define INIT_NODE_CAPACITY 4
+#define INIT_NODE_CAPACITY 16
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -186,7 +186,10 @@ struct Edge *Graph_addEdge(struct Graph *self, int idSource, int idSink, double 
     struct Edge *edge = NULL;
     struct EdgeLink *edgeLinkToSet, *edgeLinkToList, *edgeLink;
     
-    if (idSource >= self->nodeNum || idSink >= self->nodeNum) {
+    if (idSource >= self->nodeNum
+        || idSink >= self->nodeNum
+        || cost == 0
+        || self->edgeCost(self, idSource, idSink) != 0) {
         return NULL;
     }
     
