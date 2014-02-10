@@ -1,7 +1,7 @@
 oocGraph
 ========
 
-A graph api written in c with an object-oriented programming style
+A directed simple graph api written in c with an object-oriented programming style
 
 
 The file "oocGraph.h" should be included.
