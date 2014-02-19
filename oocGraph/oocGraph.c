@@ -35,6 +35,26 @@ struct Graph *copy_Graph(struct Graph *self){
     return cg;
 }
 
+void Graph_removeNode(struct Graph *self, int nodeID){
+    int i;
+    if (nodeID >= self->nodeNum || nodeID < 0 || self->nodeSet[nodeID].ID < 0) {
+        return;
+    }
+    
+    self->nodeSet[nodeID].ID = -1;
+    
+    //remove all the edges connected to nodeID
+    for (i=0; i<self->nodeNum; i++) {
+        if (self->edgeCost(self, i, nodeID) > 0) {
+            self->removeEdge(self, i, nodeID);
+        }
+        if (self->edgeCost(self, nodeID, i) > 0) {
+            self->removeEdge(self, nodeID, i);
+        }
+
+    }
+}
+
 double Graph_edgeCost(struct Graph *self, int idSource, int idSink){
     struct EdgeLink *edgeLink = NULL;
     
@@ -120,9 +140,28 @@ void Graph_printGraph(struct Graph *self){
     }
 }
 
+
+int findVacantNodeID(struct Graph *self){
+    int i;
+    for (i=0; i<self->nodeNum; i++) {
+        if (self->nodeSet[i].ID < 0) {
+            return i;
+        }
+    }
+    return self->nodeNum;
+}
+
 int Graph_addNode(struct Graph *self, char *nodeName){
-    
+    int vacantID;
     struct Node *newNode;
+    
+    //check if there is a vacant id
+    vacantID = findVacantNodeID(self);
+    if (vacantID < self->nodeNum) {
+        self->nodeSet[vacantID].ID = vacantID;
+        self->nodeSet[vacantID].nodeName = nodeName;
+        return vacantID;
+    }
     
     //Enlarge the nodeSet space
     if (self->nodeNum == self->nodeSetCapacity) {
@@ -237,6 +276,7 @@ struct Graph  *Graph(struct Graph *self){
     
     //Init functions
     self->addNode = Graph_addNode;
+    self->removeNode = Graph_removeNode;
     self->addEdge = Graph_addEdge;
     self->printGraph = Graph_printGraph;
     self->removeEdge = Graph_removeEdge;

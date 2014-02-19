@@ -37,6 +37,9 @@ struct Graph{
     //add a node to the graph
     int (*addNode)(struct Graph *self, char *nodeName);
     
+    //remove a node to the graph
+    void (*removeNode)(struct Graph *self, int nodeID);
+    
     //add a directed edge from idSource to idSink
     struct Edge* (*addEdge)(struct Graph *self, int idSource, int idSink, double cost);
     
