@@ -11,12 +11,27 @@
 
 struct Graph;
 
-
 //****************************************************************************************//
-//The return value of the functions below should be freed maually to avoid memory leaking!//
+//    Find the shortest path from node idSource to node idSink using Dijkstra algorithm   //
+//                                                                                        //
+//  The format of the returned array is:                                                  //
+//    {[number of nodes], [idSource], [intermediate node1], ..., [idSink]}                //
+//                                                                                        //
+//  The array should be freed manually to avoid memory leaking!                           //
 //****************************************************************************************//
-
-int *Dijkstra(struct Graph *self, int idSource, int idSink);
 int *ShortestPath(struct Graph *self, int idSource, int idSink);
+
+
+//*****************************************************************************************//
+//                              The Dijkstra algorithm                                     //
+//                                                                                         //
+//  If assign -1 to idSink, the algorithm will find the shortest paths from idSource to all//
+//the other nodes.                                                                         //
+//                                                                                         //
+//  The returned array should be freed manually to avoid memory leaking!                   //
+//*****************************************************************************************//
+int *Dijkstra(struct Graph *self, int idSource, int idSink);
+
+
 
 #endif

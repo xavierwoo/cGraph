@@ -112,11 +112,13 @@ int *ShortestPath(struct Graph *self, int idSource, int idSink){
         hop++;
         preNode = previous[preNode];
     }
-    
+    reversePath[hop] = preNode;
+	hop++;
+	
     SP = (int*)malloc((hop+1) * sizeof(int));
-    //SP[0] = idSource;
+    SP[0] = hop;
     
-    for (i = hop, j=0; i>=0; i--, j++) {
+    for (i = hop-1, j=1; i>=0; i--, j++) {
         SP[j] = reversePath[i];
     }
     
