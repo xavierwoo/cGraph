@@ -73,6 +73,29 @@ double Graph_edgeCost(struct Graph *self, int idSource, int idSink){
     return 0;
 }
 
+int Graph_changeEdgeCost(struct Graph *self, int idSource, int idSink, double cost){
+	struct EdgeLink *edgeLink = NULL;
+	
+	if (idSource >= self->nodeNum || idSink >= self->nodeNum) {
+        return -1;
+    }
+	if (cost == 0) {
+		self->removeEdge(self, idSource, idSink);
+		return 0;
+	}
+	
+	edgeLink = self->nodeEdgeList[idSource];
+    while (edgeLink != NULL) {
+        if (edgeLink->edge->source == idSource && edgeLink->edge->sink == idSink) {
+			edgeLink->edge->cost = cost;
+            return 0;
+        }
+        edgeLink = edgeLink->next;
+    }
+	
+	return -1;
+}
+
 void Graph_removeEdge(struct Graph *self, int idSource, int idSink){
     struct EdgeLink *edgeLink = NULL;
     struct EdgeLink *preLink = NULL;
@@ -281,5 +304,6 @@ struct Graph  *Graph(struct Graph *self){
     self->printGraph = Graph_printGraph;
     self->removeEdge = Graph_removeEdge;
     self->edgeCost = Graph_edgeCost;
+	self->changeEdgeCost = Graph_changeEdgeCost;
     return self;
 }

@@ -52,6 +52,10 @@ struct Graph{
     //get the cost of edge from idSource to idSink
     //return 0 if no such edge
     double  (*edgeCost)(struct Graph *self, int idSource, int idSink);
+	
+	//change the cost of one edge
+	//return 0 if successful, otherwise return -1;
+	int (*changeEdgeCost)(struct Graph *self, int idSource, int idSink, double cost);
 };
 
 
