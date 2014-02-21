@@ -11,6 +11,11 @@
 
 struct Graph;
 
+struct PathList{
+	int numOfPaths;
+	int **path;
+};
+
 //****************************************************************************************//
 //    Find the shortest path from node idSource to node idSink using Dijkstra algorithm   //
 //                                                                                        //
@@ -32,6 +37,9 @@ int *ShortestPath(struct Graph *self, int idSource, int idSink);
 //*****************************************************************************************//
 int *Dijkstra(struct Graph *self, int idSource, int idSink);
 
-
+//*****************************************************************************************//
+//                        Free the memory that a PathList uses                             //
+//*****************************************************************************************//
+void FreePathList(struct PathList *pl);
 
 #endif
