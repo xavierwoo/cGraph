@@ -126,6 +126,8 @@ int *ShortestPath(struct Graph *g, int idSource, int idSink){
     hop = 0;
     
 	if (previous[preNode] == -1) {
+        free(reversePath);
+        free(previous);
 		return NULL;
 	}
 	
