@@ -281,7 +281,6 @@ struct Graph  *Graph(struct Graph *self){
     
     self = (struct Graph*)malloc(sizeof(struct Graph));
     
-    
     //Init nodeSet
     self->nodeNum = 0;
     self->nodeSetCapacity = INIT_NODE_CAPACITY;

@@ -161,31 +161,43 @@ void FreePathList(struct PathList *pl){
 //******************************************************************//
 //      This function is written for function FindKShortestPath     //
 //******************************************************************//
-struct Graph *alterGraph(struct Graph *g, struct PathLink *listA, int *path, int stop){
-	struct Graph *alteredGraph = NULL;
+int *alterGraph(struct Graph *g, struct PathLink *listA, int *path, int stop){
+	//struct Graph *alteredGraph = NULL;
 	struct PathLink *linkIter = NULL;
+	int *root;
 	int i;
+	int flag;
 	
-	alteredGraph = copy_Graph(g);
+	//alteredGraph = copy_Graph(g);
 	
-	for (linkIter = listA; linkIter->next != NULL; linkIter = linkIter->next) {
+	
+	
+	for (linkIter = listA; linkIter != NULL; linkIter = linkIter->next) {
+		flag = 1;
 		//for (i=1; i<path[0] && i<linkIter->path[0]; i++) {
-		for (i=1; i<path[0] && i<=stop; i++) {
-			if (linkIter->path[i] == path[i]) {
+		for (i=1; i<path[0] && i<=stop && flag == 1; i++) {
+			if (linkIter->path[i] != path[i]) {
+				flag = 0;
+			}
+			if (flag == 1) {
+				g->removeEdge(g, linkIter->path[i], linkIter->path[i+1]);
+			}
+			/*if (linkIter->path[i] == path[i]) {
 				alteredGraph->removeEdge(alteredGraph, linkIter->path[i], linkIter->path[i+1]);
 			}
 			else {
 				break;
-			}
+			}*/
 		}
 	}
 	
+	root = (int *)malloc((stop) * sizeof(int));
+	root[0] = stop-1;
+	for (i=1; i<stop; i++) {
+		root[i] = path[i];
+	}
 	
-	//for (i=1; i<path[0]; i++) {
-		//alteredGraph->removeEdge(alteredGraph, path[i], path[i+1]);
-	//}
-	
-	return alteredGraph;
+	return root;
 }
 
 //******************************************************************//
@@ -262,8 +274,8 @@ struct PathLink *addToPathLinkList(struct Graph *g, struct PathLink *list, int *
 			linkIter != NULL;
 			preLink = linkIter, linkIter = linkIter->next) {
 			
-			//if (path[0] <= linkIter->path[0]) {
-			if(pathLength(g, path) <= pathLength(g, linkIter->path)) {
+			if (path[0] <= linkIter->path[0]) {
+			//if(pathLength(g, path) <= pathLength(g, linkIter->path)) {
 				if (linkIter != preLink) {
 					preLink->next = newLink;
 					newLink->next = linkIter;
@@ -276,9 +288,10 @@ struct PathLink *addToPathLinkList(struct Graph *g, struct PathLink *list, int *
 				break;
 			}
 			
-			if (FLAG_insert == 0) {
+			
+		}
+		if (FLAG_insert == 0) {
 				preLink->next = newLink;
-			}
 		}
 	}
 	
@@ -309,19 +322,25 @@ struct PathList *pathLinkToPathList(struct PathLink *list, int numOfPaths){
 //******************************************************************//
 void freePathLinkList(struct PathLink *list, int freePath){
 	struct PathLink *linkIter = NULL;
-	struct PathLink *preLink = NULL;
+	struct PathLink *iterNext = NULL;
+	//struct PathLink *preLink = NULL;
 	
 	linkIter = list;
 	
-	while (linkIter != NULL) {
-		preLink = linkIter;
-		linkIter = linkIter->next;
-		
-		if (freePath != 0) {
-			free(preLink->path);
-		}
-		free(preLink);
+	if (linkIter == NULL) {
+		return;
 	}
+	
+	do{
+		iterNext = linkIter->next;
+		
+		if (freePath != 0 && linkIter->path != NULL) {
+			free(linkIter->path);
+		}
+		free(linkIter);
+		linkIter = iterNext;
+	}while(linkIter != NULL);
+	
 }
 
 struct PathList *FindKShortestPath(struct Graph *g, int idSource, int idSink, int K){
@@ -329,9 +348,7 @@ struct PathList *FindKShortestPath(struct Graph *g, int idSource, int idSink, in
 	struct PathLink *listA = NULL;
 	struct PathLink *listA_end = NULL;
 	struct PathLink *listB = NULL;
-	struct PathLink *linkIter = NULL;
 	struct Graph *tmpG = NULL;
-	struct Graph *tmpG2 = NULL;
 	int *newPath = NULL;
 	int *currP = NULL;
 	int *rootP = NULL;
@@ -356,39 +373,53 @@ struct PathList *FindKShortestPath(struct Graph *g, int idSource, int idSink, in
 		
 		//Alter the graph based on listA
 		//tmpG = alterGraph(g, listA, currP);
+		if (tmpG != NULL) {
+			del_Graph(tmpG);
+			tmpG = NULL;
+		}
 		tmpG = copy_Graph(g);
+		
 		for (iterNode=1; iterNode<currP[0]; iterNode++) {
-			//tmpG2 = copy_Graph(tmpG);
 			
-			//tmpG = alterGraph(g, listA, currP, iterNode);
-			tmpG = alterGraph(tmpG, listA, currP, iterNode);
+			if (iterNode > 1) {
+				tmpG->removeNode(tmpG, currP[iterNode-1]);
+			}
+			
 			
 			if (rootP != NULL ) {
 				free(rootP);
+				rootP = NULL;
 			}
-			//rootP = getRootPAndRemoveNodes(tmpG2, iterNode, currP);
-			rootP = getRootPAndRemoveEdges(tmpG, iterNode, currP);
 			
+			rootP = alterGraph(tmpG, listA, currP, iterNode);
+
 			if (subP != NULL) {
 				free(subP);
+				subP=NULL;
 			}
-			//subP = ShortestPath(tmpG2, currP[iterNode], idSink);
+			
 			subP = ShortestPath(tmpG, currP[iterNode], idSink);
 			
 			if (subP != NULL) {
+				
 				newPath = mergePaths(rootP, subP);
+								
 				listB = addToPathLinkList(g, listB, newPath);
+				
 			}
+			free(rootP);
+			rootP = NULL;
+			free(subP);
+			subP = NULL;
 		}
 		
 		if (listB == NULL) {
-			//del_Graph(tmpG);
-			//del_Graph(tmpG2);
-			//tmpG = NULL;
-			//tmpG2 = NULL;
+			del_Graph(tmpG);
+			tmpG = NULL;
 			break;
 		}
 		else {//Add the shortest path in listB to listA
+		
 			listA_end->next = listB;
 			listB = listB->next;
 			listA_end = listA_end->next;
@@ -396,18 +427,19 @@ struct PathList *FindKShortestPath(struct Graph *g, int idSource, int idSink, in
 			NumOfFoundPath++;
 		}
 		
-		if (tmpG != NULL) {
-			del_Graph(tmpG);
-			tmpG = NULL;
-		}
-		if (tmpG2 != NULL) {
-			del_Graph(tmpG2);
-			tmpG2 = NULL;
-		}
 	}
-	
-	PL = pathLinkToPathList(listA, NumOfFoundPath);
-	freePathLinkList(listA, 0);
+	if (tmpG != NULL) {
+		del_Graph(tmpG);
+		tmpG = NULL;
+	}
+	if (rootP != NULL ) {
+		free(rootP);
+	}
+	if (subP != NULL) {
+		free(subP);
+	}
+	//PL = pathLinkToPathList(listA, NumOfFoundPath);
+	freePathLinkList(listA, 1);
 	freePathLinkList(listB, 1);
 	return PL;
 }

@@ -42,4 +42,5 @@ int *Dijkstra(struct Graph *self, int idSource, int idSink);
 //*****************************************************************************************//
 void FreePathList(struct PathList *pl);
 
+struct PathList *FindKShortestPath(struct Graph *g, int idSource, int idSink, int K);
 #endif
