@@ -182,7 +182,7 @@ int *alterGraph(struct Graph *g, struct PathLink *listA, int *path, int stop){
 				flag = 0;
 			}
 			if (flag == 1) {
-				g->removeEdge(g, linkIter->path[i], linkIter->path[i+1]);
+				Graph_removeEdge(g, linkIter->path[i], linkIter->path[i+1]);
 			}
 			/*if (linkIter->path[i] == path[i]) {
 				alteredGraph->removeEdge(alteredGraph, linkIter->path[i], linkIter->path[i+1]);
@@ -215,9 +215,9 @@ int *getRootPAndRemoveEdges(struct Graph *g, int len, int *currP){
 	for (i=1; i<len; i++) {
 		rootP[i] = currP[i];
 		rootP[0]++;
-		g->removeNode(g, currP[i]);
+		Graph_removeNode(g, currP[i]);
 	}
-	g->removeEdge(g, currP[i], currP[i+1]);
+	Graph_removeEdge(g, currP[i], currP[i+1]);
 	return rootP;
 }
 
@@ -248,7 +248,7 @@ double pathLength(struct Graph *g, int *path) {
 	int i;
 	
 	for (i=1; i<path[0]; i++) {
-		length += g->edgeCost(g, path[i], path[i+1]);
+		length += Graph_edgeCost(g, path[i], path[i+1]);
 	}
 	
 	return length;
@@ -384,7 +384,7 @@ struct PathList *FindKShortestPath(struct Graph *g, int idSource, int idSink, in
 		for (iterNode=1; iterNode<currP[0]; iterNode++) {
 			
 			if (iterNode > 1) {
-				tmpG->removeNode(tmpG, currP[iterNode-1]);
+				Graph_removeNode(tmpG, currP[iterNode-1]);
 			}
 			
 			

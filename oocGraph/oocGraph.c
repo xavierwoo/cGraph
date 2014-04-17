@@ -21,14 +21,14 @@ struct Graph *copy_Graph(struct Graph *self){
     
     //copy nodes
     for (i=0; i<self->nodeNum; i++) {
-        cg->addNode(cg, self->nodeSet[i].nodeName);
+        Graph_addNode(cg, self->nodeSet[i].nodeName);
     }
     
     
     //copy edges
     el = self->edgeSet;
     while (el != NULL) {
-        cg->addEdge(cg, el->edge->source, el->edge->sink, el->edge->cost);
+        Graph_addEdge(cg, el->edge->source, el->edge->sink, el->edge->cost);
         el = el->next;
     }
     
@@ -45,11 +45,11 @@ void Graph_removeNode(struct Graph *self, int nodeID){
     
     //remove all the edges connected to nodeID
     for (i=0; i<self->nodeNum; i++) {
-        if (self->edgeCost(self, i, nodeID) > 0) {
-            self->removeEdge(self, i, nodeID);
+        if (Graph_edgeCost(self, i, nodeID) > 0) {
+            Graph_removeEdge(self, i, nodeID);
         }
-        if (self->edgeCost(self, nodeID, i) > 0) {
-            self->removeEdge(self, nodeID, i);
+        if (Graph_edgeCost(self, nodeID, i) > 0) {
+            Graph_removeEdge(self, nodeID, i);
         }
 
     }
@@ -80,7 +80,7 @@ int Graph_changeEdgeCost(struct Graph *self, int idSource, int idSink, double co
         return -1;
     }
 	if (cost == 0) {
-		self->removeEdge(self, idSource, idSink);
+		Graph_removeEdge(self, idSource, idSink);
 		return 0;
 	}
 	
@@ -251,7 +251,7 @@ struct Edge *Graph_addEdge(struct Graph *self, int idSource, int idSink, double 
     if (idSource >= self->nodeNum
         || idSink >= self->nodeNum
         || cost == 0
-        || self->edgeCost(self, idSource, idSink) != 0) {
+        || Graph_edgeCost(self, idSource, idSink) != 0) {
         return NULL;
     }
     
@@ -296,13 +296,5 @@ struct Graph  *Graph(struct Graph *self){
     self->edgeSet = NULL;
     
     
-    //Init functions
-    self->addNode = Graph_addNode;
-    self->removeNode = Graph_removeNode;
-    self->addEdge = Graph_addEdge;
-    self->printGraph = Graph_printGraph;
-    self->removeEdge = Graph_removeEdge;
-    self->edgeCost = Graph_edgeCost;
-	self->changeEdgeCost = Graph_changeEdgeCost;
     return self;
 }

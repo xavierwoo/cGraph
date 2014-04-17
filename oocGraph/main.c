@@ -16,31 +16,31 @@ int main(int argc, const char * argv[])
     struct Graph *g = NULL;
     g = Graph(g);
     
-    g->addNode(g, "a");
-    g->addNode(g, "b");
-    g->addNode(g, "c");
-    g->addNode(g, "d");
-    g->addNode(g, "e");
+    Graph_addNode(g, "a");
+    Graph_addNode(g, "b");
+    Graph_addNode(g, "c");
+    Graph_addNode(g, "d");
+    Graph_addNode(g, "e");
     
     
         
-    g->addEdge(g, 0, 1, 1);
-    g->addEdge(g, 1, 0, 1);
+    Graph_addEdge(g, 0, 1, 1);
+    Graph_addEdge(g, 1, 0, 1);
     
-    g->addEdge(g, 1, 2, 1);
-    g->addEdge(g, 2, 1, 1);
+    Graph_addEdge(g, 1, 2, 1);
+    Graph_addEdge(g, 2, 1, 1);
     
-    g->addEdge(g, 2, 3, 1);
-    g->addEdge(g, 3, 2, 1);
+    Graph_addEdge(g, 2, 3, 1);
+    Graph_addEdge(g, 3, 2, 1);
     
-    g->addEdge(g, 3, 4, 1);
-    g->addEdge(g, 4, 3, 1);
+    Graph_addEdge(g, 3, 4, 1);
+    Graph_addEdge(g, 4, 3, 1);
     
-    g->addEdge(g, 1, 3, 3);
-    g->addEdge(g, 3, 1, 3);
+    Graph_addEdge(g, 1, 3, 3);
+    Graph_addEdge(g, 3, 1, 3);
     
     
-    g->printGraph(g);
+    Graph_printGraph(g);
     
     return 0;
 }
