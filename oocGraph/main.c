@@ -7,8 +7,8 @@
 //
 
 #include <stdlib.h>
-#include "oocGAlg.h"
-#include "oocGraph.h"
+#include "cGAlg.h"
+#include "cGraph.h"
 
 
 int main(int argc, const char * argv[])

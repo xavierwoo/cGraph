@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 Xavier Woo. All rights reserved.
 //
 
-#include "oocGraph.h"
+#include "cGraph.h"
 
-#include "oocGAlg.h"
+#include "cGAlg.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>

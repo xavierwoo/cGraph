@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "oocGraph.h"
+#include "cGraph.h"
 
 struct Graph *copy_Graph(struct Graph *self){
     int i;
