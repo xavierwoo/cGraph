@@ -1,7 +1,7 @@
 cGraph
 ========
 
-A directed simple graph api written in c.
+A directed simple sparse graph api written in c.
 
 The cGAlg.h and cGAlg.c defines the Dijkstra algorithm and the k shortest path algorithm.
 
